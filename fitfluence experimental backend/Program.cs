@@ -1,3 +1,4 @@
+using fitfluence_experimental_backend.Configurations;
 using fitfluence_experimental_backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -25,6 +26,9 @@ builder.Services.AddCors(options =>
 
 //  logging configuration
 builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console().ReadFrom.Configuration(ctx.Configuration));
+
+// Add automapper for dependency inversion
+builder.Services.AddAutoMapper(typeof(AutoMapperConfig));
 
 var app = builder.Build();
 

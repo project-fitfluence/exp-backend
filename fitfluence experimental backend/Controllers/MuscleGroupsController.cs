@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using fitfluence_experimental_backend.Data;
+using fitfluence_experimental_backend.Models.Musclegroup;
+using AutoMapper;
 
 namespace fitfluence_experimental_backend.Controllers
 {
@@ -14,10 +16,12 @@ namespace fitfluence_experimental_backend.Controllers
     public class MuscleGroupsController : ControllerBase
     {
         private readonly FitfluenceDbContext _context;
+        private readonly IMapper _mapper;
 
-        public MuscleGroupsController(FitfluenceDbContext context)
+        public MuscleGroupsController(FitfluenceDbContext context, IMapper mapper)
         {
             _context = context;
+            this._mapper = mapper;
         }
 
         // GET: api/MuscleGroups
@@ -83,12 +87,18 @@ namespace fitfluence_experimental_backend.Controllers
         // POST: api/MuscleGroups
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<MuscleGroup>> PostMuscleGroup(MuscleGroup muscleGroup)
+        public async Task<ActionResult<MuscleGroup>> PostMuscleGroup(CreateMuscleGroupDto createMuscleGroup)
         {
-          if (_context.MuscleGroups == null)
-          {
-              return Problem("Entity set 'FitfluenceDbContext.MuscleGroups'  is null.");
-          }
+            // "CreateMuscleGroupDto" Now using DTO's to prevent overposting
+
+            if (_context.MuscleGroups == null)
+            {
+                return Problem("Entity set 'FitfluenceDbContext.MuscleGroups'  is null.");
+            }
+
+            // Map DTO to Model
+            var muscleGroup = _mapper.Map<MuscleGroup>(createMuscleGroup);
+
             _context.MuscleGroups.Add(muscleGroup);
             await _context.SaveChangesAsync();
 
