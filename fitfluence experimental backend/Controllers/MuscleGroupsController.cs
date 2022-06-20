@@ -26,31 +26,43 @@ namespace fitfluence_experimental_backend.Controllers
 
         // GET: api/MuscleGroups
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MuscleGroup>>> GetMuscleGroups()
+        public async Task<ActionResult<IEnumerable<GetMuscleGroupDto>>> GetMuscleGroups()
         {
-          if (_context.MuscleGroups == null)
-          {
-              return NotFound();
-          }
-            return await _context.MuscleGroups.ToListAsync();
+            if (_context.MuscleGroups == null)
+            {
+                return NotFound();
+            }
+            var musclegroups = await _context.MuscleGroups.ToListAsync();
+
+            
+            //Here we get a List of GetMuscleGroupDto's
+            //mapper wouldn't have alerted otherwise.
+            var records = _mapper.Map<List<GetMuscleGroupDto>>(musclegroups);
+
+            return Ok(records);
         }
 
         // GET: api/MuscleGroups/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<MuscleGroup>> GetMuscleGroup(int id)
+        public async Task<ActionResult<GetMuscleGroupDetailsDto>> GetMuscleGroup(int id)
         {
-          if (_context.MuscleGroups == null)
-          {
-              return NotFound();
-          }
-            var muscleGroup = await _context.MuscleGroups.FindAsync(id);
+            if (_context.MuscleGroups == null)
+            {
+                return NotFound();
+            }
+
+            var muscleGroup = await _context.MuscleGroups.
+                Include(q => q.Exercises)
+                .FirstOrDefaultAsync(q => q.Id == id);
 
             if (muscleGroup == null)
             {
                 return NotFound();
             }
 
-            return muscleGroup;
+            var muscleGroupDto = _mapper.Map<GetMuscleGroupDetailsDto>(muscleGroup);
+
+            return muscleGroupDto;
         }
 
         // PUT: api/MuscleGroups/5
