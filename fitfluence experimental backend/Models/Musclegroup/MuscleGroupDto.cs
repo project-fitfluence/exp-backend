@@ -2,7 +2,9 @@
 
 namespace fitfluence_experimental_backend.Models.Musclegroup
 {
-    public class CreateMuscleGroupDto: MuscleGroupDto
+    public class MuscleGroupDto
     {
+        [Required]
+        public string Name { get; set; }
     }
 }

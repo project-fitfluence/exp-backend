@@ -32,12 +32,12 @@ namespace fitfluence_experimental_backend.Controllers
             {
                 return NotFound();
             }
-            var musclegroups = await _context.MuscleGroups.ToListAsync();
+            var muscleGroups = await _context.MuscleGroups.ToListAsync();
 
             
             //Here we get a List of GetMuscleGroupDto's
             //mapper wouldn't have alerted otherwise.
-            var records = _mapper.Map<List<GetMuscleGroupDto>>(musclegroups);
+            var records = _mapper.Map<List<GetMuscleGroupDto>>(muscleGroups);
 
             return Ok(records);
         }
@@ -68,17 +68,28 @@ namespace fitfluence_experimental_backend.Controllers
         // PUT: api/MuscleGroups/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMuscleGroup(int id, MuscleGroup muscleGroup)
+        public async Task<IActionResult> PutMuscleGroup(int id, UpdateMuscleGroupDto updateMuscleGroupDto)
         {
-            if (id != muscleGroup.Id)
+            if (id != updateMuscleGroupDto.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(muscleGroup).State = EntityState.Modified;
+            // Fetch record from database
+            var muscleGroup = await _context.MuscleGroups.FindAsync(id);
+
+            // Check if record exists
+            if (muscleGroup == null)
+            {
+                return NotFound();
+            }
+
+            // Modify the record by mapping our DTO data to the fetched model
+            _mapper.Map(updateMuscleGroupDto, muscleGroup);
 
             try
             {
+                // Persist changes
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)

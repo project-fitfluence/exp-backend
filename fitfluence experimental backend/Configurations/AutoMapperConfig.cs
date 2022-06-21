@@ -12,6 +12,8 @@ namespace fitfluence_experimental_backend.Configurations
             CreateMap<MuscleGroup, CreateMuscleGroupDto>().ReverseMap();
             CreateMap<MuscleGroup, GetMuscleGroupDto>().ReverseMap();
             CreateMap<MuscleGroup, GetMuscleGroupDetailsDto>().ReverseMap();
+            CreateMap<MuscleGroup, UpdateMuscleGroupDto>().ReverseMap();
+
             CreateMap<Exercise, ExerciseDto>().ReverseMap();
         }
     }
