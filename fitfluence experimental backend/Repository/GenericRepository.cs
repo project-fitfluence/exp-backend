@@ -7,10 +7,9 @@ namespace fitfluence_experimental_backend.Repository
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly FitfluenceDbContext _context;
-        public GenericRepository(FitfluenceDbContext context)
-        {
-            this._context = context;
-        }
+        private MuscleGroupsRepository context;
+
+        public GenericRepository(FitfluenceDbContext context) => this._context = context;
 
         public async Task<T> AddAsync(T entity)
         {

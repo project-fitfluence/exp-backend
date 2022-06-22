@@ -1,5 +1,7 @@
 using fitfluence_experimental_backend.Configurations;
+using fitfluence_experimental_backend.Contracts;
 using fitfluence_experimental_backend.Data;
+using fitfluence_experimental_backend.Repository;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -29,6 +31,10 @@ builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console().ReadFrom.Configuration
 
 // Add automapper for dependency inversion
 builder.Services.AddAutoMapper(typeof(AutoMapperConfig));
+
+// Bind the interface to the repository
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>)); // <> represents the <T> which is a generic 
+builder.Services.AddScoped<IMuscleGroupsRepository, MuscleGroupsRepository>(); // We don't do that here because the entity is known (MuscleGroup)
 
 var app = builder.Build();
 
