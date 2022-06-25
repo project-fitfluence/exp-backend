@@ -4,6 +4,6 @@ namespace fitfluence_experimental_backend.Contracts
 {
     public interface IMuscleGroupsRepository : IGenericRepository<MuscleGroup>
     {
-
+        Task<MuscleGroup> GetDetails(int id);
     }
 }

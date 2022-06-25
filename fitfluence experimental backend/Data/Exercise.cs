@@ -11,7 +11,6 @@ namespace fitfluence_experimental_backend.Data
         [ForeignKey(nameof(MuscleGroupId))]
         public int MuscleGroupId { get; set; }
         public MuscleGroup MuscleGroup { get; set; }
-
     }
 
 }

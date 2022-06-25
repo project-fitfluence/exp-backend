@@ -35,6 +35,7 @@ builder.Services.AddAutoMapper(typeof(AutoMapperConfig));
 // Bind the interface to the repository
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>)); // <> represents the <T> which is a generic 
 builder.Services.AddScoped<IMuscleGroupsRepository, MuscleGroupsRepository>(); // We don't do that here because the entity is known (MuscleGroup)
+builder.Services.AddScoped<IExercisesRepository, ExercisesRepository>();
 
 var app = builder.Build();
 

@@ -46,7 +46,7 @@ namespace fitfluence_experimental_backend.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetMuscleGroupDetailsDto>> GetMuscleGroup(int id)
         {
-            var muscleGroup = await _muscleGroupsRepository.GetAsync(id);
+            var muscleGroup = await _muscleGroupsRepository.GetDetails(id);
 
             if (muscleGroup == null)
             {
@@ -55,7 +55,7 @@ namespace fitfluence_experimental_backend.Controllers
 
             var muscleGroupDto = _mapper.Map<GetMuscleGroupDetailsDto>(muscleGroup);
 
-            return muscleGroupDto;
+            return Ok(muscleGroupDto);
         }
 
         // PUT: api/MuscleGroups/5
