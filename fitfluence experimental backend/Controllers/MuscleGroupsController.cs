@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using fitfluence_experimental_backend.Data;
 using fitfluence_experimental_backend.Models.Musclegroup;
 using AutoMapper;
+using fitfluence_experimental_backend.Contracts;
 
 namespace fitfluence_experimental_backend.Controllers
 {
@@ -15,25 +16,24 @@ namespace fitfluence_experimental_backend.Controllers
     [ApiController]
     public class MuscleGroupsController : ControllerBase
     {
-        private readonly FitfluenceDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IMuscleGroupsRepository _muscleGroupsRepository;
 
-        public MuscleGroupsController(FitfluenceDbContext context, IMapper mapper)
+        public MuscleGroupsController(IMapper mapper, IMuscleGroupsRepository muscleGroupsRepository)
         {
-            _context = context;
             this._mapper = mapper;
+            this._muscleGroupsRepository = muscleGroupsRepository;
         }
 
         // GET: api/MuscleGroups
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GetMuscleGroupDto>>> GetMuscleGroups()
         {
-            if (_context.MuscleGroups == null)
+            var muscleGroups = await _muscleGroupsRepository.GetAllAsync();
+            if (muscleGroups == null)
             {
                 return NotFound();
             }
-            var muscleGroups = await _context.MuscleGroups.ToListAsync();
-
             
             //Here we get a List of GetMuscleGroupDto's
             //mapper wouldn't have alerted otherwise.
@@ -46,14 +46,7 @@ namespace fitfluence_experimental_backend.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetMuscleGroupDetailsDto>> GetMuscleGroup(int id)
         {
-            if (_context.MuscleGroups == null)
-            {
-                return NotFound();
-            }
-
-            var muscleGroup = await _context.MuscleGroups.
-                Include(q => q.Exercises)
-                .FirstOrDefaultAsync(q => q.Id == id);
+            var muscleGroup = await _muscleGroupsRepository.GetAsync(id);
 
             if (muscleGroup == null)
             {
@@ -76,7 +69,7 @@ namespace fitfluence_experimental_backend.Controllers
             }
 
             // Fetch record from database
-            var muscleGroup = await _context.MuscleGroups.FindAsync(id);
+            var muscleGroup = await _muscleGroupsRepository.GetAsync(id);
 
             // Check if record exists
             if (muscleGroup == null)
@@ -89,12 +82,12 @@ namespace fitfluence_experimental_backend.Controllers
 
             try
             {
-                // Persist changes
-                await _context.SaveChangesAsync();
+                // Update entity changes
+                await _muscleGroupsRepository.UpdateAsync(muscleGroup);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MuscleGroupExists(id))
+                if (!await _muscleGroupsRepository.Exists(id))
                 {
                     return NotFound();
                 }
@@ -113,17 +106,16 @@ namespace fitfluence_experimental_backend.Controllers
         public async Task<ActionResult<MuscleGroup>> PostMuscleGroup(CreateMuscleGroupDto createMuscleGroup)
         {
             // "CreateMuscleGroupDto" Now using DTO's to prevent overposting
-
-            if (_context.MuscleGroups == null)
-            {
-                return Problem("Entity set 'FitfluenceDbContext.MuscleGroups'  is null.");
-            }
-
             // Map DTO to Model
             var muscleGroup = _mapper.Map<MuscleGroup>(createMuscleGroup);
 
-            _context.MuscleGroups.Add(muscleGroup);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _muscleGroupsRepository.AddAsync(muscleGroup);
+            } catch (DbUpdateConcurrencyException)
+            {
+                return UnprocessableEntity();
+            }
 
             return CreatedAtAction("GetMuscleGroup", new { id = muscleGroup.Id }, muscleGroup);
         }
@@ -132,25 +124,22 @@ namespace fitfluence_experimental_backend.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMuscleGroup(int id)
         {
-            if (_context.MuscleGroups == null)
-            {
-                return NotFound();
-            }
-            var muscleGroup = await _context.MuscleGroups.FindAsync(id);
+            var muscleGroup = await _muscleGroupsRepository.GetAsync(id);
             if (muscleGroup == null)
             {
                 return NotFound();
             }
 
-            _context.MuscleGroups.Remove(muscleGroup);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _muscleGroupsRepository.DeleteAsync(id);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return Conflict();
+            }
 
             return NoContent();
-        }
-
-        private bool MuscleGroupExists(int id)
-        {
-            return (_context.MuscleGroups?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
