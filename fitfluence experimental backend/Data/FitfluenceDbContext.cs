@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace fitfluence_experimental_backend.Data
 {
-    public class FitfluenceDbContext: DbContext
+    public class FitfluenceDbContext: IdentityDbContext<ApiUser>
     {
         public FitfluenceDbContext(DbContextOptions options) : base(options)
         {

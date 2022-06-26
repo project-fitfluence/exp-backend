@@ -2,6 +2,7 @@ using fitfluence_experimental_backend.Configurations;
 using fitfluence_experimental_backend.Contracts;
 using fitfluence_experimental_backend.Data;
 using fitfluence_experimental_backend.Repository;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -14,6 +15,11 @@ builder.Services.AddDbContext<FitfluenceDbContext>(options =>
 {
     options.UseSqlServer(connectionString);
 });
+
+// Add IdentityCore
+builder.Services.AddIdentityCore<ApiUser>()
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<FitfluenceDbContext>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
