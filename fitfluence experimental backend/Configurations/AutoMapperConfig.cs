@@ -2,6 +2,7 @@
 using fitfluence_experimental_backend.Data;
 using fitfluence_experimental_backend.Models.Exercise;
 using fitfluence_experimental_backend.Models.Musclegroup;
+using fitfluence_experimental_backend.Models.Users;
 
 namespace fitfluence_experimental_backend.Configurations
 {
@@ -9,6 +10,7 @@ namespace fitfluence_experimental_backend.Configurations
     {
         public AutoMapperConfig()
         {
+            CreateMap<MuscleGroup, MuscleGroupDto>().ReverseMap();
             CreateMap<MuscleGroup, CreateMuscleGroupDto>().ReverseMap();
             CreateMap<MuscleGroup, GetMuscleGroupDto>().ReverseMap();
             CreateMap<MuscleGroup, GetMuscleGroupDetailsDto>().ReverseMap();
@@ -18,6 +20,8 @@ namespace fitfluence_experimental_backend.Configurations
             CreateMap<Exercise, CreateExerciseDto>().ReverseMap();
             CreateMap<Exercise, GetExerciseDto>().ReverseMap();
             CreateMap<Exercise, UpdateExerciseDto>().ReverseMap();
+
+            CreateMap<ApiUserDto, ApiUser>().ReverseMap();
         }
     }
 }
