@@ -19,6 +19,6 @@ namespace fitfluence_experimental_backend.Models.Users
         public string Password { get; set; }
 
         [DataType(DataType.ImageUrl)]
-        public string ProfilePicture { get; set; }
+        public string? ProfilePicture { get; set; }
     }
 }

@@ -42,6 +42,7 @@ builder.Services.AddAutoMapper(typeof(AutoMapperConfig));
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>)); // <> represents the <T> which is a generic 
 builder.Services.AddScoped<IMuscleGroupsRepository, MuscleGroupsRepository>(); // We don't do that here because the entity is known (MuscleGroup)
 builder.Services.AddScoped<IExercisesRepository, ExercisesRepository>();
+builder.Services.AddScoped<IAuthManager, AuthManager>();
 
 var app = builder.Build();
 
