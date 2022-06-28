@@ -36,5 +36,23 @@ namespace fitfluence_experimental_backend.Controllers
             return Ok();
         }
 
+        // POST: api/account/login
+        [HttpPost]
+        [Route("login")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult> login([FromBody] LoginDto loginDto)
+        {
+            var isValidUser = await _authManager.Login(loginDto);
+
+            if(!isValidUser)
+            {
+                return Unauthorized();
+            }
+
+            return Ok();
+        }
+
     }
 }

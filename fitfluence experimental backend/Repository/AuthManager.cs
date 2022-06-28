@@ -17,6 +17,21 @@ namespace fitfluence_experimental_backend.Repository
             this._userManager = userManager;
         }
 
+        public async Task<bool> Login(LoginDto loginDto)
+        {
+            bool isValidUser = false;
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(loginDto.Email);
+                isValidUser = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+                // API's are stateless, however here we could call _userManager.signin if it weren't an API.
+            }
+            catch(Exception)
+            {
+            }
+            return isValidUser;
+        }
+
         public async Task<IEnumerable<IdentityError>> Register(ApiUserDto userDto)
         {
             var user = _mapper.Map<ApiUser>(userDto);
