@@ -9,11 +9,13 @@ using fitfluence_experimental_backend.Data;
 using AutoMapper;
 using fitfluence_experimental_backend.Contracts;
 using fitfluence_experimental_backend.Models.Exercise;
+using Microsoft.AspNetCore.Authorization;
 
 namespace fitfluence_experimental_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ExercisesController : ControllerBase
     {
         private readonly IMapper _mapper;

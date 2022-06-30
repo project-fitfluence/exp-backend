@@ -9,6 +9,7 @@ using fitfluence_experimental_backend.Data;
 using fitfluence_experimental_backend.Models.Musclegroup;
 using AutoMapper;
 using fitfluence_experimental_backend.Contracts;
+using Microsoft.AspNetCore.Authorization;
 
 namespace fitfluence_experimental_backend.Controllers
 {
@@ -61,6 +62,7 @@ namespace fitfluence_experimental_backend.Controllers
         // PUT: api/MuscleGroups/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutMuscleGroup(int id, UpdateMuscleGroupDto updateMuscleGroupDto)
         {
             if (id != updateMuscleGroupDto.Id)
@@ -103,6 +105,7 @@ namespace fitfluence_experimental_backend.Controllers
         // POST: api/MuscleGroups
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<MuscleGroup>> PostMuscleGroup(CreateMuscleGroupDto createMuscleGroup)
         {
             // "CreateMuscleGroupDto" Now using DTO's to prevent overposting
@@ -122,6 +125,7 @@ namespace fitfluence_experimental_backend.Controllers
 
         // DELETE: api/MuscleGroups/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteMuscleGroup(int id)
         {
             var muscleGroup = await _muscleGroupsRepository.GetAsync(id);
