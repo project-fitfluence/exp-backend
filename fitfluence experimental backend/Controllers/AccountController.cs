@@ -44,14 +44,14 @@ namespace fitfluence_experimental_backend.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> login([FromBody] LoginDto loginDto)
         {
-            var isValidUser = await _authManager.Login(loginDto);
+            var response = await _authManager.Login(loginDto);
 
-            if(!isValidUser)
+            if(response == null)
             {
                 return Unauthorized();
             }
 
-            return Ok();
+            return Ok(response);
         }
 
     }
