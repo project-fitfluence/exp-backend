@@ -7,5 +7,7 @@ namespace fitfluence_experimental_backend.Contracts
     {
         Task<IEnumerable<IdentityError>> Register(ApiUserDto user);
         Task<AuthResponseDto> Login(LoginDto user);
+        Task<string> CreateRefreshToken();
+        Task<AuthResponseDto> VerifyRefreshToken(AuthResponseDto request);
     }
 }

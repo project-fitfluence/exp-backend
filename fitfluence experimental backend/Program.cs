@@ -22,7 +22,9 @@ builder.Services.AddDbContext<FitfluenceDbContext>(options =>
 // Add IdentityCore
 builder.Services.AddIdentityCore<ApiUser>()
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<FitfluenceDbContext>();
+                .AddTokenProvider<DataProtectorTokenProvider<ApiUser>>("FitfluenceApi")
+                .AddEntityFrameworkStores<FitfluenceDbContext>()
+                .AddDefaultTokenProviders();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
