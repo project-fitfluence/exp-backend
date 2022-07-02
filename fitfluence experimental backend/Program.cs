@@ -1,6 +1,7 @@
 using fitfluence_experimental_backend.Configurations;
 using fitfluence_experimental_backend.Contracts;
 using fitfluence_experimental_backend.Data;
+using fitfluence_experimental_backend.Middlware;
 using fitfluence_experimental_backend.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -75,6 +76,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 

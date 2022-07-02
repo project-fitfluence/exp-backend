@@ -10,9 +10,11 @@ namespace fitfluence_experimental_backend.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAuthManager _authManager;
-        public AccountController(IAuthManager authManager)
+        private readonly ILogger<AccountController> _logger;
+        public AccountController(IAuthManager authManager, ILogger<AccountController> logger)
         {
             this._authManager = authManager;
+            this._logger = logger;
         }
 
         // POST: api/account/register
@@ -46,7 +48,7 @@ namespace fitfluence_experimental_backend.Controllers
         {
             var response = await _authManager.Login(loginDto);
 
-            if(response == null)
+            if (response == null)
             {
                 return Unauthorized();
             }
