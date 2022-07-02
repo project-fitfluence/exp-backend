@@ -10,6 +10,7 @@ using AutoMapper;
 using fitfluence_experimental_backend.Contracts;
 using fitfluence_experimental_backend.Models.Exercise;
 using Microsoft.AspNetCore.Authorization;
+using fitfluence_experimental_backend.Models;
 
 namespace fitfluence_experimental_backend.Controllers
 {
@@ -27,19 +28,12 @@ namespace fitfluence_experimental_backend.Controllers
             this._exercisesRepository = exercisesRepository;
         }
 
-        // GET: api/Exercises
+        // GET: api/Exercises?startindex=0&pagesize=25&pagenumber=1
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetExerciseDto>>> GetExercises()
+        public async Task<ActionResult<PagedResult<GetExerciseDto>>> GetExercises([FromQuery] QueryParameters queryParameters)
         {
-            var exercises = await _exercisesRepository.GetAllAsync();
-            if (exercises == null)
-            {
-                return NotFound();
-            }
-
-            var records = _mapper.Map<List<GetExerciseDto>>(exercises);
-
-            return Ok(records);
+            var pagedExercisesResult = await _exercisesRepository.GetAllAsync<GetExerciseDto>(queryParameters);
+            return Ok(pagedExercisesResult);
         }
 
         // GET: api/Exercises/5

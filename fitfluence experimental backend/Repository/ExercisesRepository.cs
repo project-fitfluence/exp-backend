@@ -1,4 +1,5 @@
-﻿using fitfluence_experimental_backend.Contracts;
+﻿using AutoMapper;
+using fitfluence_experimental_backend.Contracts;
 using fitfluence_experimental_backend.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,9 +9,9 @@ namespace fitfluence_experimental_backend.Repository
     {
         private readonly FitfluenceDbContext _context;
 
-        public ExercisesRepository (FitfluenceDbContext context): base(context)
+        public ExercisesRepository (FitfluenceDbContext context, IMapper mapper): base(context, mapper)
         {
-            this._context = context;
+            
         }
     }
 }
