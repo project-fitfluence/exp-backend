@@ -41,15 +41,7 @@ namespace fitfluence_experimental_backend.Controllers
         public async Task<ActionResult<GetExerciseDto>> GetExercise(int id)
         {
             var exercises = await _exercisesRepository.GetAsync(id);
-
-            if (exercises == null)
-            {
-                return NotFound();
-            }
-
-            var exercisesDto = _mapper.Map<GetExerciseDto>(exercises);
-
-            return Ok(exercisesDto);
+            return Ok(exercises);
         }
 
         // PUT: api/Exercises/5
