@@ -26,6 +26,14 @@ namespace fitfluence_experimental_backend.Controllers
             this._exercisesRepository = exercisesRepository;
         }
 
+        // GET: api/Hotels
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<IEnumerable<GetExerciseDto>>> GetExercises()
+        {
+            var exercises = await _exercisesRepository.GetAllAsync<List<GetExerciseDto>>();
+            return Ok(exercises);
+        }
+
         // GET: api/Exercises?startindex=0&pagesize=25&pagenumber=1
         [HttpGet]
         public async Task<ActionResult<PagedResult<GetExerciseDto>>> GetExercises([FromQuery] QueryParameters queryParameters)
@@ -38,8 +46,8 @@ namespace fitfluence_experimental_backend.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetExerciseDto>> GetExercise(int id)
         {
-            var exercises = await _exercisesRepository.GetAsync(id);
-            return Ok(exercises);
+            var exercise = await _exercisesRepository.GetAsync(id);
+            return Ok(exercise);
         }
 
         // PUT: api/Exercises/5
@@ -77,6 +85,7 @@ namespace fitfluence_experimental_backend.Controllers
 
         // DELETE: api/Exercises/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteExercise(int id)
         {
             var exercise = await _exercisesRepository.GetAsync(id);

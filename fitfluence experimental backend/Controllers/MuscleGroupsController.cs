@@ -10,6 +10,7 @@ using fitfluence_experimental_backend.Models.Musclegroup;
 using AutoMapper;
 using fitfluence_experimental_backend.Contracts;
 using Microsoft.AspNetCore.Authorization;
+using fitfluence_experimental_backend.Models;
 
 namespace fitfluence_experimental_backend.Controllers
 {
@@ -26,37 +27,28 @@ namespace fitfluence_experimental_backend.Controllers
             this._muscleGroupsRepository = muscleGroupsRepository;
         }
 
-        // GET: api/MuscleGroups
-        [HttpGet]
+        // GET: api/Hotels
+        [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<GetMuscleGroupDto>>> GetMuscleGroups()
         {
-            var muscleGroups = await _muscleGroupsRepository.GetAllAsync();
-            if (muscleGroups == null)
-            {
-                return NotFound();
-            }
-            
-            //Here we get a List of GetMuscleGroupDto's
-            //mapper wouldn't have alerted otherwise.
-            var records = _mapper.Map<List<GetMuscleGroupDto>>(muscleGroups);
+            var muscleGroups = await _muscleGroupsRepository.GetAllAsync<List<GetMuscleGroupDto>>();
+            return Ok(muscleGroups);
+        }
 
-            return Ok(records);
+        // GET: api/MuscleGroups?startindex=0&pagesize=25&pagenumber=1
+        [HttpGet]
+        public async Task<ActionResult<PagedResult<GetMuscleGroupDto>>> GetMuscleGroups([FromQuery] QueryParameters queryParameters)
+        {
+            var pagedMuscleGroupsResult = await _muscleGroupsRepository.GetAllAsync<GetMuscleGroupDto>(queryParameters);
+            return Ok(pagedMuscleGroupsResult);
         }
 
         // GET: api/MuscleGroups/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetMuscleGroupDetailsDto>> GetMuscleGroup(int id)
+        public async Task<ActionResult<GetMuscleGroupDto>> GetMuscleGroup(int id)
         {
-            var muscleGroup = await _muscleGroupsRepository.GetDetails(id);
-
-            if (muscleGroup == null)
-            {
-                return NotFound();
-            }
-
-            var muscleGroupDto = _mapper.Map<GetMuscleGroupDetailsDto>(muscleGroup);
-
-            return Ok(muscleGroupDto);
+            var muscleGroups = await _muscleGroupsRepository.GetAsync(id);
+            return Ok(muscleGroups);
         }
 
         // PUT: api/MuscleGroups/5
@@ -65,27 +57,9 @@ namespace fitfluence_experimental_backend.Controllers
         [Authorize]
         public async Task<IActionResult> PutMuscleGroup(int id, UpdateMuscleGroupDto updateMuscleGroupDto)
         {
-            if (id != updateMuscleGroupDto.Id)
-            {
-                return BadRequest();
-            }
-
-            // Fetch record from database
-            var muscleGroup = await _muscleGroupsRepository.GetAsync(id);
-
-            // Check if record exists
-            if (muscleGroup == null)
-            {
-                return NotFound();
-            }
-
-            // Modify the record by mapping our DTO data to the fetched model
-            _mapper.Map(updateMuscleGroupDto, muscleGroup);
-
             try
             {
-                // Update entity changes
-                await _muscleGroupsRepository.UpdateAsync(muscleGroup);
+                await _muscleGroupsRepository.UpdateAsync(id, updateMuscleGroupDto);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -108,19 +82,8 @@ namespace fitfluence_experimental_backend.Controllers
         [Authorize]
         public async Task<ActionResult<MuscleGroup>> PostMuscleGroup(CreateMuscleGroupDto createMuscleGroup)
         {
-            // "CreateMuscleGroupDto" Now using DTO's to prevent overposting
-            // Map DTO to Model
-            var muscleGroup = _mapper.Map<MuscleGroup>(createMuscleGroup);
-
-            try
-            {
-                await _muscleGroupsRepository.AddAsync(muscleGroup);
-            } catch (DbUpdateConcurrencyException)
-            {
-                return UnprocessableEntity();
-            }
-
-            return CreatedAtAction("GetMuscleGroup", new { id = muscleGroup.Id }, muscleGroup);
+            var muscleGroup = await _muscleGroupsRepository.AddAsync<CreateMuscleGroupDto, GetMuscleGroupDto>(createMuscleGroup);
+            return CreatedAtAction(nameof(GetMuscleGroup), new { id = muscleGroup.Id }, muscleGroup);
         }
 
         // DELETE: api/MuscleGroups/5
