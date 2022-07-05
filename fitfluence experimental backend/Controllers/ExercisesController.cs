@@ -19,12 +19,10 @@ namespace fitfluence_experimental_backend.Controllers
     [Authorize]
     public class ExercisesController : ControllerBase
     {
-        private readonly IMapper _mapper;
         private readonly IExercisesRepository _exercisesRepository;
 
-        public ExercisesController(IMapper mapper, IExercisesRepository exercisesRepository)
+        public ExercisesController(IExercisesRepository exercisesRepository)
         {
-            this._mapper = mapper;
             this._exercisesRepository = exercisesRepository;
         }
 
@@ -49,27 +47,9 @@ namespace fitfluence_experimental_backend.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutExercise(int id, UpdateExerciseDto updateExerciseDto)
         {
-            if (id != updateExerciseDto.Id)
-            {
-                return BadRequest();
-            }
-
-            // Fetch record from database
-            var exercise = await _exercisesRepository.GetAsync(id);
-
-            // Check if record exists
-            if (exercise == null)
-            {
-                return NotFound();
-            }
-
-            // Modify the record by mapping our DTO data to the fetched model
-            _mapper.Map(updateExerciseDto, exercise);
-
             try
             {
-                // Update entity changes
-                await _exercisesRepository.UpdateAsync(exercise);
+                await _exercisesRepository.UpdateAsync(id, updateExerciseDto);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -89,22 +69,10 @@ namespace fitfluence_experimental_backend.Controllers
         // POST: api/Exercises
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Exercise>> PostExercise(CreateExerciseDto createExerciseDto)
+        public async Task<ActionResult<ExerciseDto>> PostExercise(CreateExerciseDto exerciseDto)
         {
-            // "CreateMuscleGroupDto" Now using DTO's to prevent overposting
-            // Map DTO to Model
-            var exercise = _mapper.Map<Exercise>(createExerciseDto);
-
-            try
-            {
-                await _exercisesRepository.AddAsync(exercise);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return UnprocessableEntity();
-            }
-
-            return CreatedAtAction("GetExercise", new { id = exercise.Id }, exercise);
+            var exercise = await _exercisesRepository.AddAsync<CreateExerciseDto, GetExerciseDto>(exerciseDto);
+            return CreatedAtAction(nameof(GetExercise), new { id = exercise.Id }, exercise);
         }
 
         // DELETE: api/Exercises/5

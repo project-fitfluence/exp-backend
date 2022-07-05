@@ -74,6 +74,13 @@ namespace fitfluence_experimental_backend.Repository
             };
         }
 
+        public async Task<List<TResult>> GetAllAsync<TResult>()
+        {
+            return await _context.Set<T>()
+                .ProjectTo<TResult>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+        }
+
         public async Task<T> GetAsync(int? id)
         {
             if (id == null)
