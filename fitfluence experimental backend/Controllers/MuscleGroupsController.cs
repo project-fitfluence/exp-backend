@@ -27,7 +27,7 @@ namespace fitfluence_experimental_backend.Controllers
             this._muscleGroupsRepository = muscleGroupsRepository;
         }
 
-        // GET: api/Hotels
+        // GET: api/MuscleGroups
         [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<GetMuscleGroupDto>>> GetMuscleGroups()
         {

@@ -26,7 +26,7 @@ namespace fitfluence_experimental_backend.Controllers
             this._exercisesRepository = exercisesRepository;
         }
 
-        // GET: api/Hotels
+        // GET: api/Exercises
         [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<GetExerciseDto>>> GetExercises()
         {
