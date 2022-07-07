@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HotelListing.API.Core.Models
+namespace fitfluence_experimental_backend.Models
 {
     public interface IBaseDto
     {

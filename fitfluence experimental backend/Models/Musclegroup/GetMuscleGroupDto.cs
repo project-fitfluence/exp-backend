@@ -1,5 +1,4 @@
 ﻿using fitfluence_experimental_backend.Models.Exercise;
-using HotelListing.API.Core.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace fitfluence_experimental_backend.Models.Musclegroup

@@ -4,7 +4,6 @@ using fitfluence_experimental_backend.Contracts;
 using fitfluence_experimental_backend.Data;
 using fitfluence_experimental_backend.Exceptions;
 using fitfluence_experimental_backend.Models;
-using HotelListing.API.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace fitfluence_experimental_backend.Repository
