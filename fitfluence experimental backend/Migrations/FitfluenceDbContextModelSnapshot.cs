@@ -22,36 +22,6 @@ namespace fitfluence_experimental_backend.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("CustomerWorkoutPlan", b =>
-                {
-                    b.Property<int>("CustomersId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WorkoutPlansId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CustomersId", "WorkoutPlansId");
-
-                    b.HasIndex("WorkoutPlansId");
-
-                    b.ToTable("WorkoutPlansCustomers", (string)null);
-                });
-
-            modelBuilder.Entity("ExerciseWorkoutDay", b =>
-                {
-                    b.Property<int>("ExercisesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WorkoutDaysId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ExercisesId", "WorkoutDaysId");
-
-                    b.HasIndex("WorkoutDaysId");
-
-                    b.ToTable("ExerciseWorkoutDay");
-                });
-
             modelBuilder.Entity("fitfluence_experimental_backend.Data.ApiUser", b =>
                 {
                     b.Property<string>("Id")
@@ -128,27 +98,6 @@ namespace fitfluence_experimental_backend.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("fitfluence_experimental_backend.Data.Customer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ApiUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ApiUserId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApiUserId1");
-
-                    b.ToTable("Customers");
-                });
-
             modelBuilder.Entity("fitfluence_experimental_backend.Data.Exercise", b =>
                 {
                     b.Property<int>("Id")
@@ -168,14 +117,9 @@ namespace fitfluence_experimental_backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TrainerId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("MuscleGroupId");
-
-                    b.HasIndex("TrainerId");
 
                     b.ToTable("Exercises");
 
@@ -185,16 +129,14 @@ namespace fitfluence_experimental_backend.Migrations
                             Id = 1,
                             Description = "A great exercise for the general chest area",
                             MuscleGroupId = 2,
-                            Name = "Benchpress",
-                            TrainerId = 0
+                            Name = "Benchpress"
                         },
                         new
                         {
                             Id = 2,
                             Description = "Great for building strong legs!",
                             MuscleGroupId = 6,
-                            Name = "Squat",
-                            TrainerId = 0
+                            Name = "Squat"
                         });
                 });
 
@@ -277,83 +219,6 @@ namespace fitfluence_experimental_backend.Migrations
                         });
                 });
 
-            modelBuilder.Entity("fitfluence_experimental_backend.Data.Trainer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ApiUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ApiUserId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApiUserId1");
-
-                    b.ToTable("Trainers");
-                });
-
-            modelBuilder.Entity("fitfluence_experimental_backend.Data.WorkoutDay", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("DayType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TrainerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WorkoutPlanId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TrainerId");
-
-                    b.HasIndex("WorkoutPlanId");
-
-                    b.ToTable("WorkoutDays");
-                });
-
-            modelBuilder.Entity("fitfluence_experimental_backend.Data.WorkoutPlan", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TrainerId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TrainerId");
-
-                    b.ToTable("WorkoutPlans");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -383,29 +248,29 @@ namespace fitfluence_experimental_backend.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "cf6e4031-8b39-4126-9a37-d64f53477399",
-                            ConcurrencyStamp = "b4523dc9-aa07-4805-b496-8c6a0b308983",
+                            Id = "f7095f2b-db53-4bf5-8095-87538e6358a2",
+                            ConcurrencyStamp = "fd6036e2-afe8-4ee3-b89a-5a80f9afdd8e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "5cdc29ee-400c-416c-b537-0db13dfd622f",
-                            ConcurrencyStamp = "90be2c85-3e8d-4197-aa30-c5d5994a005b",
+                            Id = "8abd454e-28a3-4330-9ff9-c8a127a873d7",
+                            ConcurrencyStamp = "e6ecfdb0-64f5-4931-93d1-66472983a974",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "264a5fe1-4eee-4f71-8820-378da84ceb16",
-                            ConcurrencyStamp = "95d4a7b5-fe46-4fad-8459-6f456a4fefc1",
+                            Id = "21c8b618-34eb-4e9a-9307-ee295406e15a",
+                            ConcurrencyStamp = "3890fae1-9d69-446f-bf35-62a002db2f58",
                             Name = "Partner",
                             NormalizedName = "PARTNER"
                         },
                         new
                         {
-                            Id = "c43e2847-abb9-4e89-8bdd-00edeb166a76",
-                            ConcurrencyStamp = "34b67647-1d23-4748-a697-26fa89fefc10",
+                            Id = "3be2b01a-e74b-4547-9c1b-cf82dd69d9bf",
+                            ConcurrencyStamp = "22c32b3d-4471-4f7f-96c8-d58401f056a1",
                             Name = "Support",
                             NormalizedName = "SUPPORT"
                         });
@@ -517,45 +382,6 @@ namespace fitfluence_experimental_backend.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CustomerWorkoutPlan", b =>
-                {
-                    b.HasOne("fitfluence_experimental_backend.Data.Customer", null)
-                        .WithMany()
-                        .HasForeignKey("CustomersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("fitfluence_experimental_backend.Data.WorkoutPlan", null)
-                        .WithMany()
-                        .HasForeignKey("WorkoutPlansId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ExerciseWorkoutDay", b =>
-                {
-                    b.HasOne("fitfluence_experimental_backend.Data.Exercise", null)
-                        .WithMany()
-                        .HasForeignKey("ExercisesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("fitfluence_experimental_backend.Data.WorkoutDay", null)
-                        .WithMany()
-                        .HasForeignKey("WorkoutDaysId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("fitfluence_experimental_backend.Data.Customer", b =>
-                {
-                    b.HasOne("fitfluence_experimental_backend.Data.ApiUser", "ApiUser")
-                        .WithMany()
-                        .HasForeignKey("ApiUserId1");
-
-                    b.Navigation("ApiUser");
-                });
-
             modelBuilder.Entity("fitfluence_experimental_backend.Data.Exercise", b =>
                 {
                     b.HasOne("fitfluence_experimental_backend.Data.MuscleGroup", "MuscleGroup")
@@ -564,54 +390,7 @@ namespace fitfluence_experimental_backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("fitfluence_experimental_backend.Data.Trainer", "Trainer")
-                        .WithMany("Exercises")
-                        .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("MuscleGroup");
-
-                    b.Navigation("Trainer");
-                });
-
-            modelBuilder.Entity("fitfluence_experimental_backend.Data.Trainer", b =>
-                {
-                    b.HasOne("fitfluence_experimental_backend.Data.ApiUser", "ApiUser")
-                        .WithMany()
-                        .HasForeignKey("ApiUserId1");
-
-                    b.Navigation("ApiUser");
-                });
-
-            modelBuilder.Entity("fitfluence_experimental_backend.Data.WorkoutDay", b =>
-                {
-                    b.HasOne("fitfluence_experimental_backend.Data.Trainer", "Trainer")
-                        .WithMany("WorkoutDays")
-                        .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("fitfluence_experimental_backend.Data.WorkoutPlan", "WorkoutPlan")
-                        .WithMany("WorkoutDays")
-                        .HasForeignKey("WorkoutPlanId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Trainer");
-
-                    b.Navigation("WorkoutPlan");
-                });
-
-            modelBuilder.Entity("fitfluence_experimental_backend.Data.WorkoutPlan", b =>
-                {
-                    b.HasOne("fitfluence_experimental_backend.Data.Trainer", "Trainer")
-                        .WithMany("WorkoutPlan")
-                        .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Trainer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -668,20 +447,6 @@ namespace fitfluence_experimental_backend.Migrations
             modelBuilder.Entity("fitfluence_experimental_backend.Data.MuscleGroup", b =>
                 {
                     b.Navigation("Exercises");
-                });
-
-            modelBuilder.Entity("fitfluence_experimental_backend.Data.Trainer", b =>
-                {
-                    b.Navigation("Exercises");
-
-                    b.Navigation("WorkoutDays");
-
-                    b.Navigation("WorkoutPlan");
-                });
-
-            modelBuilder.Entity("fitfluence_experimental_backend.Data.WorkoutPlan", b =>
-                {
-                    b.Navigation("WorkoutDays");
                 });
 #pragma warning restore 612, 618
         }

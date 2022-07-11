@@ -7,15 +7,10 @@ namespace fitfluence_experimental_backend.Data
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        [ForeignKey(nameof(TrainerId))]
-        public int TrainerId { get; set; }
-        public Trainer Trainer { get; set; }
 
         [ForeignKey(nameof(MuscleGroupId))]
         public int MuscleGroupId { get; set; }
         public MuscleGroup MuscleGroup { get; set; }
-        public IList<WorkoutDay> WorkoutDays { get; set; }
-
     }
 
 }
